@@ -37,24 +37,28 @@ if ( ! class_exists( 'Gravity_Forms_Access' )) :
             );
 
             add_role( 'Viewer', 'Viewer', $capabilities );
-            add_role( 'argenta-flats-north-little-rock-ar', 'Argenta Flats - North Little Rock, AR', $capabilities );
-            add_role( 'brentwood-apartments–conway-ar', 'Brentwood Apartments – Conway. AR', $capabilities );
-            add_role( 'glenrock-apartments–conway-ar', 'Glenrock Apartments – Conway, AR', $capabilities );
-            add_role( 'helen-street–conway-ar', 'Helen Street – Conway, AR', $capabilities );
-            add_role( 'jlofts–conway-ar', 'Jlofts – Conway, AR', $capabilities );
-            add_role( 'kyle-kourt–conway-ar', 'Kyle Kourt – Conway, AR', $capabilities );
-            add_role( 'lasley-historic-flats–conway-ar', 'Lasley Historic Flats – Conway, AR', $capabilities );
-            add_role( 'robinson-court–conway-ar', 'Robinson Court – Conway, AR', $capabilities );
-            add_role( 'row-houses-at-hendrix-village–conway-ar', 'Row Houses at Hendrix Village – Conway, AR', $capabilities );
-            add_role( 'robins-square-apartments–conway-ar', 'Robins Square Apartments – Conway, AR', $capabilities );
-            add_role( 'st-james-park–conway-ar', 'St. James Park – Conway, AR', $capabilities );
-            add_role( 'centerstone-conway-ar', 'Centerstone - Conway, AR', $capabilities );
+            add_role( 'Argenta Flats - North Little Rock, AR', 'Argenta Flats - North Little Rock, AR', $capabilities );
+            add_role( 'Brentwood Apartments – Conway. AR', 'Brentwood Apartments – Conway. AR', $capabilities );
+            add_role( 'Glenrock Apartments – Conway, AR', 'Glenrock Apartments – Conway, AR', $capabilities );
+            add_role( 'Helen Street – Conway, AR', 'Helen Street – Conway, AR', $capabilities );
+            add_role( 'Jlofts – Conway, AR', 'Jlofts – Conway, AR', $capabilities );
+            add_role( 'Kyle Kourt – Conway, AR', 'Kyle Kourt – Conway, AR', $capabilities );
+            add_role( 'Lasley Historic Flats – Conway, AR', 'Lasley Historic Flats – Conway, AR', $capabilities );
+            add_role( 'Robinson Court – Conway, AR', 'Robinson Court – Conway, AR', $capabilities );
+            add_role( 'Row Houses at Hendrix Village – Conway, AR', 'Row Houses at Hendrix Village – Conway, AR', $capabilities );
+            add_role( 'Robins Square Apartments – Conway, AR', 'Robins Square Apartments – Conway, AR', $capabilities );
+            add_role( 'St. James Park – Conway, AR', 'St. James Park – Conway, AR', $capabilities );
+            add_role( 'Centerstone - Conway, AR', 'Centerstone - Conway, AR', $capabilities );
         }
 
+        /**
+         * Search Criteria - Returns Entries Query
+         *
+         * @return Array
+         */
         function get_required_form_entries()
         {
 
-            $form_id = '1';
             $search_criteria = array(
                 'status'        => 'active',
                 'field_filters' => array(
@@ -77,7 +81,7 @@ if ( ! class_exists( 'Gravity_Forms_Access' )) :
         function get_current_user_role() {
 
             // Get current User Role
-            $user = wp_get_current_user();
+            $user = wp_get_current_user()->roles[0];
             return $user;
 
         }
@@ -92,7 +96,7 @@ if ( ! class_exists( 'Gravity_Forms_Access' )) :
             $user = $this->get_current_user_role();
 
             if ( $user !== 'administrator' ) {
-                add_filter( 'gform_search_criteria_entry_list_1', [ $this, 'get_required_form_entries' ], 10, 2);
+                add_filter( 'gform_search_criteria_entry_list_1', [ $this, 'get_required_form_entries' ], 10, 2 );
             } else if ( $user == 'administrator' ) {
                 return;
             }
