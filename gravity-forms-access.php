@@ -11,9 +11,6 @@ if ( !defined ( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-// Get Data from here
-// http://localhost/jason/wp-json/gf/v2/entries
-
 if ( ! class_exists( 'Gravity_Forms_Access' )) :
     class Gravity_Forms_Access {
 
