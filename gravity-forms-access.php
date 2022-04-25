@@ -19,7 +19,7 @@ if ( ! class_exists( 'Gravity_Forms_Access' )) :
 
         function initialize_hook() {
             add_action( 'init', [ $this, 'create_user_role' ] );
-            add_action( 'init', [ $this, 'get_current_user_role' ] );
+            add_action( 'init', [ $this, 'load_form_view' ] );
         }
 
         /**
@@ -36,26 +36,23 @@ if ( ! class_exists( 'Gravity_Forms_Access' )) :
                 'gravityforms_view_entries' => true
             );
 
-            add_role( 'viewer', 'Viewer', $capabilities );
+            add_role( 'Viewer', 'Viewer', $capabilities );
+            add_role( 'argenta-flats-north-little-rock-ar', 'Argenta Flats - North Little Rock, AR', $capabilities );
+            add_role( 'brentwood-apartments–conway-ar', 'Brentwood Apartments – Conway. AR', $capabilities );
+            add_role( 'glenrock-apartments–conway-ar', 'Glenrock Apartments – Conway, AR', $capabilities );
+            add_role( 'helen-street–conway-ar', 'Helen Street – Conway, AR', $capabilities );
+            add_role( 'jlofts–conway-ar', 'Jlofts – Conway, AR', $capabilities );
+            add_role( 'kyle-kourt–conway-ar', 'Kyle Kourt – Conway, AR', $capabilities );
+            add_role( 'lasley-historic-flats–conway-ar', 'Lasley Historic Flats – Conway, AR', $capabilities );
+            add_role( 'robinson-court–conway-ar', 'Robinson Court – Conway, AR', $capabilities );
+            add_role( 'row-houses-at-hendrix-village–conway-ar', 'Row Houses at Hendrix Village – Conway, AR', $capabilities );
+            add_role( 'robins-square-apartments–conway-ar', 'Robins Square Apartments – Conway, AR', $capabilities );
+            add_role( 'st-james-park–conway-ar', 'St. James Park – Conway, AR', $capabilities );
+            add_role( 'centerstone-conway-ar', 'Centerstone - Conway, AR', $capabilities );
         }
 
-        /**
-         * Gets Get Current User Role and 
-         * displays entries
-         *
-         * @return void
-         */
-        function get_current_user_role() {
-            // Get current User Role
-            $user = wp_get_current_user()->roles[0];
-            if ( $user !== 'administrator' ) {
-                add_filter( 'gform_search_criteria_entry_list_1', [ $this, 'get_required_form_entries' ], 10, 2 );
-            } else if ( $user == 'administrator' ) {
-                return;
-            }
-        }
-
-        function get_required_form_entries() {
+        function get_required_form_entries()
+        {
 
             $form_id = '1';
             $search_criteria = array(
@@ -64,7 +61,7 @@ if ( ! class_exists( 'Gravity_Forms_Access' )) :
                     'mode' => 'any',
                     array(
                         'key'   => '2',
-                        'value' => 'B'
+                        'value' => $this->get_current_user_role()
                     ),
                 )
             );
@@ -72,6 +69,34 @@ if ( ! class_exists( 'Gravity_Forms_Access' )) :
             return $search_criteria;
         }
 
+        /**
+         * Undocumented function
+         *
+         * @return Current_User_Role
+         */
+        function get_current_user_role() {
+
+            // Get current User Role
+            $user = wp_get_current_user();
+            return $user;
+
+        }
+
+        /**
+         * Loads the hook for specific Role
+         *
+         * @return void
+         */
+        function load_form_view() {
+
+            $user = $this->get_current_user_role();
+
+            if ( $user !== 'administrator' ) {
+                add_filter( 'gform_search_criteria_entry_list_1', [ $this, 'get_required_form_entries' ], 10, 2);
+            } else if ( $user == 'administrator' ) {
+                return;
+            }
+        }
     }
 
     $gravity_forms_access = new Gravity_Forms_Access();
